@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: yavar
+      POSTGRES_PASSWORD: yavar_dev_password
+      POSTGRES_DB: yavar
+    ports:
+      - "5432:5432"
+    volumes:
+      - yavar_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yavar"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://yavar:yavar_dev_password@postgres:5432/yavar?schema=public
+    ports:
+      - "4000:4000"
+    volumes:
+      - yavar_uploads:/app/uploads
+
+volumes:
+  yavar_postgres_data:
+  yavar_uploads:

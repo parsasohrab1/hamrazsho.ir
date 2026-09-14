@@ -1,0 +1,85 @@
+// Yavar backend data model.
+//
+// Deliberately minimal by design: instead of a hand-normalized table per
+// client feature (20+ and growing), UserData is a generic per-user
+// key-value store that mirrors the AsyncStorage keys the client already
+// uses (see mental-wellness-assistant/src/state/use*.ts). This gets every
+// existing feature centralized storage + cross-device sync without a
+// slow, error-prone one-schema-per-feature migration effort. If a
+// specific feature later needs real relational queries (e.g. searching
+// across all users' mood logs for analytics), split that one key out into
+// its own table then — this generic store is the pragmatic starting
+// point, not a permanent constraint.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  phone     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  data  UserData[]
+  files UserFile[]
+
+  @@map("users")
+}
+
+/// One row per (user, key) — e.g. key = "mind_companion_mood_log_v1".
+/// `value` holds exactly what the client would otherwise keep in
+/// AsyncStorage for that key, as JSON.
+model UserData {
+  id        String   @id @default(uuid())
+  userId    String
+  key       String
+  value     Json
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, key])
+  @@index([userId])
+  @@map("user_data")
+}
+
+/// Uploaded files (currently: style-advisor self/wardrobe photos).
+/// `storageKey` is an opaque path/key handed to the active StorageProvider
+/// (local disk by default — see src/services/storageProvider.ts); it is
+/// never a public URL by itself.
+model UserFile {
+  id         String   @id @default(uuid())
+  userId     String
+  key        String // caller-assigned label, e.g. "style_selfie" — not unique, a user can have many
+  storageKey String
+  mimeType   String
+  sizeBytes  Int
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("user_files")
+}
+
+/// Short-lived OTP codes for phone login. Only a bcrypt hash of the code
+/// is stored, never the plaintext code itself.
+model OtpCode {
+  id        String   @id @default(uuid())
+  phone     String
+  codeHash  String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  consumed  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([phone])
+  @@map("otp_codes")
+}
