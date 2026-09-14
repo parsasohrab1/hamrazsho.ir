@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as syncStorage from "@/services/syncStorage";
 import { FamilyMember, PersonalityTrait, SocialRelation } from "@/types";
 
 const STORAGE_KEY = "mind_companion_family_circle_v1";
@@ -17,7 +17,7 @@ export function useFamilyCircle() {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        const raw = await syncStorage.getItem(STORAGE_KEY);
         if (raw) setMembers(JSON.parse(raw));
       } catch {
         // Falls back to an empty list.
@@ -30,7 +30,7 @@ export function useFamilyCircle() {
   const persist = useCallback(async (next: FamilyMember[]) => {
     setMembers(next);
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      await syncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     } catch {
       // Best-effort persistence; in-memory state already updated.
     }

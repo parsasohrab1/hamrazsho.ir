@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as syncStorage from "@/services/syncStorage";
 
 const STORAGE_KEY = "mind_companion_active_listening_enabled_v1";
 
@@ -12,7 +12,7 @@ export function useActiveListeningSetting() {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        const raw = await syncStorage.getItem(STORAGE_KEY);
         if (raw) setEnabledState(raw === "true");
       } catch {
         // Falls back to disabled.
@@ -25,7 +25,7 @@ export function useActiveListeningSetting() {
   const setEnabled = useCallback(async (next: boolean) => {
     setEnabledState(next);
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, String(next));
+      await syncStorage.setItem(STORAGE_KEY, String(next));
     } catch {
       // Best-effort persistence; in-memory state already updated.
     }

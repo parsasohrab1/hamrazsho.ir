@@ -1,5 +1,6 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
+import { AuthProvider } from "@/state/AuthContext";
 import { SessionProvider } from "@/state/SessionContext";
 import { CookingProvider } from "@/state/CookingContext";
 import { StoryProvider } from "@/state/StoryContext";
@@ -10,19 +11,21 @@ import RootNavigator from "@/navigation/RootNavigator";
 
 export default function App() {
   return (
-    <SessionProvider>
-      <CookingProvider>
-        <StoryProvider>
-          <CounselingProvider>
-            <FitnessProvider>
-              <StyleProvider>
-                <StatusBar style="light" />
-                <RootNavigator />
-              </StyleProvider>
-            </FitnessProvider>
-          </CounselingProvider>
-        </StoryProvider>
-      </CookingProvider>
-    </SessionProvider>
+    <AuthProvider>
+      <SessionProvider>
+        <CookingProvider>
+          <StoryProvider>
+            <CounselingProvider>
+              <FitnessProvider>
+                <StyleProvider>
+                  <StatusBar style="light" />
+                  <RootNavigator />
+                </StyleProvider>
+              </FitnessProvider>
+            </CounselingProvider>
+          </StoryProvider>
+        </CookingProvider>
+      </SessionProvider>
+    </AuthProvider>
   );
 }

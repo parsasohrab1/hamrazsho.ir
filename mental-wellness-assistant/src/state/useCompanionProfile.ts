@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as syncStorage from "@/services/syncStorage";
 import { CompanionProfile } from "@/types";
 
 const STORAGE_KEY = "mind_companion_companion_profile_v1";
@@ -17,7 +17,7 @@ export function useCompanionProfile() {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        const raw = await syncStorage.getItem(STORAGE_KEY);
         if (raw) setProfile(JSON.parse(raw));
       } catch {
         // Falls back to an empty profile.
@@ -30,7 +30,7 @@ export function useCompanionProfile() {
   const persist = useCallback(async (next: CompanionProfile) => {
     setProfile(next);
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      await syncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     } catch {
       // Best-effort persistence; in-memory state already updated.
     }

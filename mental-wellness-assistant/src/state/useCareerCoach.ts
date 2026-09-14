@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as syncStorage from "@/services/syncStorage";
 import { CareerJournalEntry, CareerMilestone, CareerPath, CareerProfile } from "@/types";
 import { milestonesForPath } from "@/engine/careerCoachEngine";
 
@@ -24,7 +24,7 @@ export function useCareerCoach() {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        const raw = await syncStorage.getItem(STORAGE_KEY);
         if (raw) setData(JSON.parse(raw));
       } catch {
         // Falls back to empty state.
@@ -37,7 +37,7 @@ export function useCareerCoach() {
   const persist = useCallback(async (next: CareerCoachData) => {
     setData(next);
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      await syncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     } catch {
       // Best-effort persistence; in-memory state already updated.
     }

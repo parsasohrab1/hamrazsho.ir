@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as syncStorage from "@/services/syncStorage";
 import { Mood, MoodLogEntry } from "@/types";
 
 const STORAGE_KEY = "mind_companion_mood_log_v1";
@@ -15,7 +15,7 @@ export function useMoodLog() {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        const raw = await syncStorage.getItem(STORAGE_KEY);
         if (raw) setLog(JSON.parse(raw));
       } catch {
         // Falls back to an empty log.
@@ -30,7 +30,7 @@ export function useMoodLog() {
       const entry: MoodLogEntry = { mood, note, loggedAt: new Date().toISOString() };
       const next = [...log, entry].slice(-MAX_ENTRIES);
       setLog(next);
-      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch(() => {
+      syncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch(() => {
         // Best-effort persistence; in-memory state already updated.
       });
     },

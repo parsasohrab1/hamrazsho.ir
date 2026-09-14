@@ -28,6 +28,7 @@ import GiftAdvisorScreen from "@/screens/GiftAdvisorScreen";
 import FamilyCircleScreen from "@/screens/FamilyCircleScreen";
 import PersonalTasksScreen from "@/screens/PersonalTasksScreen";
 import SettingsScreen from "@/screens/SettingsScreen";
+import LoginScreen from "@/screens/LoginScreen";
 import { PersonalityTrait, SocialRelation } from "@/types";
 
 export type RootStackParamList = {
@@ -60,6 +61,7 @@ export type RootStackParamList = {
   GiftAdvisor: undefined;
   PersonalTasks: undefined;
   Settings: undefined;
+  Login: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -150,6 +152,7 @@ export default function RootNavigator() {
         <Stack.Screen name="FamilyCircle" component={FamilyCircleScreen} options={{ title: "خانواده و اطرافیان" }} />
         <Stack.Screen name="PersonalTasks" component={PersonalTasksScreen} options={{ title: "کارهای شخصی" }} />
         <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: "تنظیمات" }} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{ title: "ورود" }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

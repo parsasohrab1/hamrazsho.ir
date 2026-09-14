@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as syncStorage from "@/services/syncStorage";
 import { TrustedContact } from "@/types";
 
 const STORAGE_KEY = "mind_companion_trusted_contact_v1";
@@ -18,7 +18,7 @@ export function useTrustedContact() {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        const raw = await syncStorage.getItem(STORAGE_KEY);
         if (raw) setContact(JSON.parse(raw));
       } catch {
         // Corrupt/missing storage just falls back to "no contact set".
@@ -31,7 +31,7 @@ export function useTrustedContact() {
   const saveContact = useCallback(async (next: TrustedContact) => {
     setContact(next);
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      await syncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     } catch {
       // Best-effort persistence; in-memory state already updated.
     }
@@ -40,7 +40,7 @@ export function useTrustedContact() {
   const clearContact = useCallback(async () => {
     setContact(null);
     try {
-      await AsyncStorage.removeItem(STORAGE_KEY);
+      await syncStorage.removeItem(STORAGE_KEY);
     } catch {
       // Best-effort.
     }

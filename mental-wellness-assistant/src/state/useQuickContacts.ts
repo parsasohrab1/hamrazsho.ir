@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as syncStorage from "@/services/syncStorage";
 import { QuickContact } from "@/types";
 
 const STORAGE_KEY = "mind_companion_quick_contacts_v1";
@@ -16,7 +16,7 @@ export function useQuickContacts() {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        const raw = await syncStorage.getItem(STORAGE_KEY);
         if (raw) {
           // Contacts saved before the "trusted" flag existed lack it at
           // runtime even though the type now requires it — normalize on load.
@@ -34,7 +34,7 @@ export function useQuickContacts() {
   const persist = useCallback(async (next: QuickContact[]) => {
     setContacts(next);
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      await syncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     } catch {
       // Best-effort persistence; in-memory state already updated.
     }

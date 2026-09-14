@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as syncStorage from "@/services/syncStorage";
 import { FavoriteMusicProfile, OriginPreference, VocalPreference } from "@/types";
 
 const STORAGE_KEY = "mind_companion_favorite_music_profile_v1";
@@ -26,7 +26,7 @@ export function useFavoriteMusic() {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        const raw = await syncStorage.getItem(STORAGE_KEY);
         if (raw) setProfile(JSON.parse(raw));
       } catch {
         // Corrupt/missing storage just falls back to defaults.
@@ -43,7 +43,7 @@ export function useFavoriteMusic() {
     const next = { ...updater(profileRef.current), updatedAt: new Date().toISOString() };
     profileRef.current = next;
     setProfile(next);
-    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch(() => {
+    syncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch(() => {
       // Best-effort persistence; in-memory state already updated.
     });
   }, []);

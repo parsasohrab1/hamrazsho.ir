@@ -1,16 +1,46 @@
 import React from "react";
-import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Switch, Text, View } from "react-native";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/navigation/RootNavigator";
 import { useSession } from "@/state/SessionContext";
+import { useAuth } from "@/state/AuthContext";
 import Disclaimer from "@/components/Disclaimer";
 import { DISCLAIMERS } from "@/data/disclaimers";
 import { voiceService } from "@/voice/voiceService";
 
-export default function SettingsScreen() {
+type Props = NativeStackScreenProps<RootStackParamList, "Settings">;
+
+export default function SettingsScreen({ navigation }: Props) {
   const { locale, setLocale, voiceEnabled, setVoiceEnabled } = useSession();
+  const { isLoggedIn, phone, syncing, syncError, logout } = useAuth();
   const listeningSupported = voiceService.isListeningSupported();
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.sectionTitle}>حساب کاربری و همگام‌سازی</Text>
+      {isLoggedIn === null ? (
+        <ActivityIndicator color="#60a5fa" />
+      ) : isLoggedIn ? (
+        <View style={styles.accountBox}>
+          <Text style={styles.accountPhone}>وارد شده با شمارهٔ {phone}</Text>
+          {syncing ? (
+            <View style={styles.row}>
+              <ActivityIndicator color="#60a5fa" />
+              <Text style={styles.rowLabel}>در حال همگام‌سازی...</Text>
+            </View>
+          ) : null}
+          {syncError ? <Text style={styles.errorText}>{syncError}</Text> : null}
+          <Pressable style={styles.secondaryButton} onPress={logout}>
+            <Text style={styles.secondaryButtonText}>خروج از حساب</Text>
+          </Pressable>
+        </View>
+      ) : (
+        <Pressable style={styles.primaryButton} onPress={() => navigation.navigate("Login")}>
+          <Text style={styles.primaryButtonText}>ورود برای پشتیبان‌گیری ابری</Text>
+        </Pressable>
+      )}
+      <Disclaimer text={DISCLAIMERS.cloudSyncLimitations} />
+
       <View style={styles.row}>
         <Switch value={voiceEnabled} onValueChange={setVoiceEnabled} />
         <Text style={styles.rowLabel}>پاسخ‌گویی صوتی (متن‌به‌گفتار)</Text>
@@ -52,4 +82,18 @@ const styles = StyleSheet.create({
   langChip: { borderRadius: 12, paddingVertical: 10, paddingHorizontal: 18, borderWidth: 1, borderColor: "#475569" },
   langChipActive: { backgroundColor: "#2563eb", borderColor: "#2563eb" },
   langChipText: { color: "#f1f5f9", fontWeight: "600" },
+  accountBox: { gap: 10 },
+  accountPhone: { color: "#e2e8f0", fontSize: 15, textAlign: "right" },
+  primaryButton: { backgroundColor: "#2563eb", borderRadius: 14, paddingVertical: 14, alignItems: "center" },
+  primaryButtonText: { color: "#fff", fontSize: 15, fontWeight: "700" },
+  secondaryButton: {
+    backgroundColor: "transparent",
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#475569",
+  },
+  secondaryButtonText: { color: "#e2e8f0", fontSize: 14, fontWeight: "600" },
+  errorText: { color: "#f87171", fontSize: 13, textAlign: "right" },
 });
