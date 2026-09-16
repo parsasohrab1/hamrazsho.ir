@@ -69,6 +69,30 @@ model UserFile {
   @@map("user_files")
 }
 
+/// Shared, read-only advisory content (legal-consultation topics,
+/// mental-health awareness topics, ...) — NOT per-user data, unlike
+/// UserData above. One row per topic; every user reads the same set via
+/// GET /skills/:skill. Seeded from scripts/seedSkillContent.ts, sourced
+/// from the same content shipped bundled in the client
+/// (mental-wellness-assistant/src/data/legalTopics.ts and
+/// mentalHealthTopics.ts) so the app keeps working fully offline even
+/// though this table also exists as a centralized, updatable copy.
+model SkillContent {
+  id        String   @id @default(uuid())
+  skill     String // "legal" | "mental_health" — matches the client's AdvisorySkill type
+  day       Int
+  title     String
+  hook      String
+  points    Json // string[]
+  cta       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([skill, day])
+  @@index([skill])
+  @@map("skill_content")
+}
+
 /// Short-lived OTP codes for phone login. Only a bcrypt hash of the code
 /// is stored, never the plaintext code itself.
 model OtpCode {

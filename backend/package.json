@@ -12,7 +12,8 @@
     "test": "jest",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:deploy": "prisma migrate deploy"
+    "prisma:deploy": "prisma migrate deploy",
+    "seed:skills": "tsx src/scripts/seedSkillContent.ts"
   },
   "dependencies": {
     "@prisma/client": "5.19.1",

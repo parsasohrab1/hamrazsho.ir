@@ -29,6 +29,8 @@ import FamilyCircleScreen from "@/screens/FamilyCircleScreen";
 import PersonalTasksScreen from "@/screens/PersonalTasksScreen";
 import SettingsScreen from "@/screens/SettingsScreen";
 import LoginScreen from "@/screens/LoginScreen";
+import LegalAdvisorScreen from "@/screens/LegalAdvisorScreen";
+import MentalHealthAwarenessScreen from "@/screens/MentalHealthAwarenessScreen";
 import { PersonalityTrait, SocialRelation } from "@/types";
 
 export type RootStackParamList = {
@@ -62,6 +64,8 @@ export type RootStackParamList = {
   PersonalTasks: undefined;
   Settings: undefined;
   Login: undefined;
+  LegalAdvisor: undefined;
+  MentalHealthAwareness: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -153,6 +157,12 @@ export default function RootNavigator() {
         <Stack.Screen name="PersonalTasks" component={PersonalTasksScreen} options={{ title: "کارهای شخصی" }} />
         <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: "تنظیمات" }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ title: "ورود" }} />
+        <Stack.Screen name="LegalAdvisor" component={LegalAdvisorScreen} options={{ title: "مشاور حقوقی" }} />
+        <Stack.Screen
+          name="MentalHealthAwareness"
+          component={MentalHealthAwarenessScreen}
+          options={{ title: "آگاهی از سلامت روان" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -787,4 +787,26 @@ export interface PersonalTaskIntent {
   subject: string | null;
 }
 
+/**
+ * A single browsable topic in an advisory-content skill (legal
+ * consultation, mental-health awareness). This is a curated,
+ * pre-written reference library — not a live conversation with a
+ * real lawyer/psychologist and not a diagnostic tool. Each topic is
+ * self-contained: a title, an opening hook, a few key talking
+ * points, and a suggested next step. See
+ * DISCLAIMERS.legalAdvisorLimitations and
+ * DISCLAIMERS.mentalHealthAwarenessLimitations.
+ */
+export type AdvisorySkill = "legal" | "mental_health";
+
+export interface AdvisoryTopic {
+  id: string;
+  skill: AdvisorySkill;
+  day: number;
+  title: string;
+  hook: string;
+  points: string[];
+  cta: string;
+}
+
 export type PersonalTaskMissingInfo = "contact" | "phone" | "email" | "message";

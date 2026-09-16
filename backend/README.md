@@ -37,6 +37,21 @@ AsyncStorage keys), and file uploads (e.g. style-advisor photos).
 - Every route that reads/writes user data or files is scoped to the
   authenticated `req.userId` — there is no endpoint that can be used to
   read another user's data by id-guessing.
+- **Advisory skill content** (`src/routes/skills.ts`, model `SkillContent`):
+  unlike everything else above, this is shared, read-only reference
+  content (legal-consultation topics, mental-health-awareness topics) —
+  the same 30-topic-each library every user reads, not per-user data, so
+  `GET /skills` and `GET /skills/:skill` need no auth. The client ships
+  the identical content bundled locally too
+  (`mental-wellness-assistant/src/data/legalTopics.ts` and
+  `mentalHealthTopics.ts`), so the app works fully offline without ever
+  calling this route — it exists so the content can be updated centrally
+  later without an app-store release. Seed it with `npm run seed:skills`
+  (source data in `src/data/legalTopicsSeed.ts` and
+  `mentalHealthTopicsSeed.ts`, generated from the same content as the
+  client's copy and the YouTube content calendar in
+  `../content-calendars/`). The seed upserts on `(skill, day)`, so it's
+  safe to re-run after editing the source data.
 
 ## API summary
 
@@ -54,6 +69,8 @@ AsyncStorage keys), and file uploads (e.g. style-advisor photos).
 | POST | `/files` | Bearer | upload a file (multipart, field `file`, optional `key`) |
 | GET | `/files/:id` | Bearer | download a file's bytes |
 | DELETE | `/files/:id` | Bearer | delete a file |
+| GET | `/skills` | — | list available advisory skills and their topic counts |
+| GET | `/skills/:skill` | — | list all topics for a skill (`legal` or `mental_health`) |
 
 Authenticated requests send `Authorization: Bearer <accessToken>`.
 
@@ -64,6 +81,7 @@ cp .env.example .env
 docker compose up -d postgres   # local Postgres only
 npm install
 npm run prisma:migrate          # creates tables, generates the Prisma client
+npm run seed:skills             # loads the legal + mental-health advisory content
 npm run dev                     # http://localhost:4000
 ```
 
@@ -98,7 +116,8 @@ npm test
 ```
 
 Tests cover the pure-function services (`otpService`, `jwtService`,
-`userDataValidation`) — no database is required to run them; `jest.setup.js`
+`userDataValidation`) and the advisory-skill seed data's shape
+(`skillContentSeed`) — no database is required to run them; `jest.setup.js`
 supplies the env vars `env.ts` requires so these files can be imported in
 isolation.
 

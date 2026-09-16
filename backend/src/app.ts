@@ -3,6 +3,7 @@ import cors from "cors";
 import { authRouter } from "@/routes/auth";
 import { dataRouter } from "@/routes/data";
 import { filesRouter } from "@/routes/files";
+import { skillsRouter } from "@/routes/skills";
 
 export const createApp = () => {
   const app = express();
@@ -17,6 +18,7 @@ export const createApp = () => {
   app.use("/auth", authRouter);
   app.use("/data", dataRouter);
   app.use("/files", filesRouter);
+  app.use("/skills", skillsRouter);
 
   // Centralized error handler — keeps stack traces out of API responses.
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
