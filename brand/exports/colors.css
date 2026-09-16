@@ -1,0 +1,7 @@
+/* Yavar (یاور) brand color tokens — web / CSS custom properties. */
+:root {
+  --yavar-teal: #0EA5A4;    /* primary — trust, calm, technical competence */
+  --yavar-amber: #F5A623;   /* secondary — human warmth, support */
+  --yavar-navy: #0D1424;    /* organizational background (dark) */
+  --yavar-cream: #FAF0DC;   /* warm off-white — focal points, text on navy */
+}

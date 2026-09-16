@@ -1,0 +1,6 @@
+{
+  "teal": { "hex": "#0EA5A4", "rgb": [14, 165, 164], "role": "primary" },
+  "amber": { "hex": "#F5A623", "rgb": [245, 166, 35], "role": "secondary" },
+  "navy": { "hex": "#0D1424", "rgb": [13, 20, 36], "role": "background" },
+  "cream": { "hex": "#FAF0DC", "rgb": [250, 240, 220], "role": "accent" }
+}

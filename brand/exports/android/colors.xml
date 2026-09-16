@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Yavar (یاور) brand color tokens — Android (res/values/colors.xml). -->
+<resources>
+    <color name="yavar_teal">#0EA5A4</color>
+    <color name="yavar_amber">#F5A623</color>
+    <color name="yavar_navy">#0D1424</color>
+    <color name="yavar_cream">#FAF0DC</color>
+</resources>

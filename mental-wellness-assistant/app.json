@@ -8,7 +8,8 @@
     "userInterfaceStyle": "automatic",
     "icon": "./assets/icon.png",
     "splash": {
-      "backgroundColor": "#0f172a"
+      "image": "./assets/splash.png",
+      "backgroundColor": "#0D1424"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -26,12 +27,13 @@
       "package": "com.example.mindcompanion",
       "permissions": ["RECORD_AUDIO", "ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION", "CAMERA"],
       "adaptiveIcon": {
-        "backgroundColor": "#0f172a"
+        "foregroundImage": "./assets/adaptive-icon-foreground.png",
+        "backgroundColor": "#0D1424"
       }
     },
     "web": {
       "bundler": "metro",
-      "favicon": "./assets/icon.png"
+      "favicon": "./assets/favicon.png"
     }
   }
 }
