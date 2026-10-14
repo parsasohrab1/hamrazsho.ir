@@ -1,4 +1,4 @@
-# hamdam
+# hamrazsho.ir
 
 دستیار صوتی «همدم» — اسکلت اولیهٔ محصول (Expo: iOS/Android/Web).
 
