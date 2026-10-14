@@ -1,6 +1,8 @@
 {
-  "teal": { "hex": "#0EA5A4", "rgb": [14, 165, 164], "role": "primary" },
-  "amber": { "hex": "#F5A623", "rgb": [245, 166, 35], "role": "secondary" },
-  "navy": { "hex": "#0D1424", "rgb": [13, 20, 36], "role": "background" },
-  "cream": { "hex": "#FAF0DC", "rgb": [250, 240, 220], "role": "accent" }
+  "lapis": { "hex": "#16245C", "role": "primary" },
+  "turquoise": { "hex": "#2BB3AA", "role": "secondary" },
+  "gold": { "hex": "#E0A93B", "role": "accent" },
+  "ivory": { "hex": "#F7F1E3", "role": "light" },
+  "night": { "hex": "#0B1233", "role": "app background" },
+  "button": { "hex": "#1F9C94", "role": "primary button" }
 }

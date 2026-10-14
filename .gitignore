@@ -1,0 +1,5 @@
+# Local junk
+__pycache__/
+~$*
+*.tgz
+*backup-30days.xlsx

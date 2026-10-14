@@ -1,19 +1,18 @@
-version: "3.9"
 
 services:
   postgres:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: yavar
-      POSTGRES_PASSWORD: yavar_dev_password
-      POSTGRES_DB: yavar
+      POSTGRES_USER: hamraz
+      POSTGRES_PASSWORD: hamraz_dev_password
+      POSTGRES_DB: hamraz
     ports:
       - "5432:5432"
     volumes:
-      - yavar_postgres_data:/var/lib/postgresql/data
+      - hamraz_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U yavar"]
+      test: ["CMD-SHELL", "pg_isready -U hamraz"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -27,12 +26,12 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: postgresql://yavar:yavar_dev_password@postgres:5432/yavar?schema=public
+      DATABASE_URL: postgresql://hamraz:hamraz_dev_password@postgres:5432/hamraz?schema=public
     ports:
       - "4000:4000"
     volumes:
-      - yavar_uploads:/app/uploads
+      - hamraz_uploads:/app/uploads
 
 volumes:
-  yavar_postgres_data:
-  yavar_uploads:
+  hamraz_postgres_data:
+  hamraz_uploads:

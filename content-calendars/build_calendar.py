@@ -485,10 +485,10 @@ education_rows = [
 HEADERS = ["روز", "عنوان ویدیو", "قلاب / زاویهٔ شروع", "نکات کلیدی متن (۲ تا ۳ دقیقه)",
            "دعوت به اقدام (CTA)", "هشتگ‌های پیشنهادی", "یادداشت مسئولیت (هر ویدیو)"]
 
-HEADER_FILL = PatternFill("solid", fgColor="0D1424")
+HEADER_FILL = PatternFill("solid", fgColor="0B1233")
 HEADER_FONT = Font(name="Arial", size=11, bold=True, color="FAF0DC")
 BODY_FONT = Font(name="Arial", size=10, color="1A1A1A")
-DAY_FONT = Font(name="Arial", size=11, bold=True, color="0EA5A4")
+DAY_FONT = Font(name="Arial", size=11, bold=True, color="1F9C94")
 TITLE_FONT = Font(name="Arial", size=10, bold=True, color="1A1A1A")
 WRAP_RIGHT = Alignment(horizontal="right", vertical="top", wrap_text=True, readingOrder=2)
 WRAP_CENTER = Alignment(horizontal="center", vertical="top", wrap_text=True)
@@ -546,7 +546,7 @@ def main():
     ws3 = wb.create_sheet("تقویم مشاوره تحصیلی")
     build_sheet(ws3, education_rows, EDUCATION_DISCLAIMER)
 
-    out = "/tmp/claude-0/-home-user-parsasohrab1/738f139f-e5b8-5db3-baa6-9d2aba75e7e0/scratchpad/content_calendars/tagvim-mohtava-yavar.xlsx"
+    out = "/tmp/claude-0/-home-user-parsasohrab1/738f139f-e5b8-5db3-baa6-9d2aba75e7e0/scratchpad/content_calendars/tagvim-mohtava-hamraz.xlsx"
     wb.save(out)
     print("saved", out, "legal_rows:", len(legal_rows), "mh_rows:", len(mental_health_rows), "edu_rows:", len(education_rows))
 

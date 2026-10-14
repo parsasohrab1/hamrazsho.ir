@@ -1,0 +1,31 @@
+{
+  "name": {
+    "fa": "همراز",
+    "en": "Hamraz"
+  },
+  "tagline": {
+    "fa": "همراه صوتی شما برای حال خوب، خانواده و کارهای روزمره",
+    "en": "Your voice companion for wellbeing, family and everyday life"
+  },
+  "legalEntityName": "[نام حقوقی ناشر — پیش از انتشار تکمیل شود]",
+  "supportEmail": "support@hamrazsho.ir",
+  "website": "https://hamrazsho.ir",
+  "privacyPolicyUrl": "https://hamrazsho.ir/privacy",
+  "termsUrl": "https://hamrazsho.ir/terms",
+  "colors": {
+    "primary": "#1F9C94",
+    "accent": "#E0A93B",
+    "background": "#0B1233",
+    "surface": "#141E4D",
+    "surfaceBorder": "#243272",
+    "text": "#F8FAFC",
+    "textMuted": "#CBD5E1",
+    "danger": "#DC2626"
+  },
+  "downloads": {
+    "bazaar": "https://cafebazaar.ir/app/ir.hamrazsho.app",
+    "myket": "https://myket.ir/app/ir.hamrazsho.app",
+    "play": "https://play.google.com/store/apps/details?id=ir.hamrazsho.app",
+    "apk": "https://hamrazsho.ir/download/hamraz.apk"
+  }
+}

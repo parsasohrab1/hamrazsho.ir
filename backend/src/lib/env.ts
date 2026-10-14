@@ -37,6 +37,29 @@ export const env = {
   storageProvider: (process.env.STORAGE_PROVIDER ?? "local") as "local" | "s3",
   uploadsDir: process.env.UPLOADS_DIR ?? "./uploads",
   maxUploadMb: int("MAX_UPLOAD_MB", 8),
+
+  /** Comma-separated list of allowed browser origins (web/PWA build).
+   *  Empty = allow any origin (fine for dev; set it in production). Native
+   *  apps don't send an Origin header, so they're unaffected. */
+  corsOrigins: (process.env.CORS_ORIGINS ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean),
+  /** Number of reverse proxies in front of the API (nginx/Caddy/ArvanCloud),
+   *  so rate limiting sees the real client IP. */
+  trustProxy: int("TRUST_PROXY", 0),
+
+  // ---- Billing ----
+  /** Android package name registered in the stores (must equal app config). */
+  appPackageName: process.env.APP_PACKAGE_NAME ?? "ir.hamrazsho.app",
+  bazaarApiSecret: process.env.BAZAAR_API_SECRET ?? "",
+  myketAccessToken: process.env.MYKET_ACCESS_TOKEN ?? "",
+  zarinpalMerchantId: process.env.ZARINPAL_MERCHANT_ID ?? "",
+  zarinpalSandbox: (process.env.ZARINPAL_SANDBOX ?? "true") === "true",
+  /** Public base URL of this API, used to build the Zarinpal callback URL. */
+  publicApiUrl: (process.env.PUBLIC_API_URL ?? "http://localhost:4000").replace(/\/$/, ""),
+  /** Where to send the browser after a web payment finishes. */
+  webAppUrl: (process.env.WEB_APP_URL ?? "http://localhost:8081").replace(/\/$/, ""),
 };
 
 if (env.isProduction) {

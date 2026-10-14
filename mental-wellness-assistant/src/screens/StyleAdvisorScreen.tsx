@@ -72,11 +72,14 @@ export default function StyleAdvisorScreen({ navigation }: Props) {
   const [colorNote, setColorNote] = useState("");
 
   const pickPhoto = async (source: "camera" | "library", onDone: (uri: string) => void) => {
-    const permission =
-      source === "camera"
-        ? await ImagePicker.requestCameraPermissionsAsync()
-        : await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) return;
+    // Only the camera needs a runtime permission. The gallery opens the
+    // system Photo Picker, which needs no storage/media permission (and
+    // app.config.ts deliberately blocks READ_MEDIA_IMAGES, per Google
+    // Play's photo-permission policy).
+    if (source === "camera") {
+      const permission = await ImagePicker.requestCameraPermissionsAsync();
+      if (!permission.granted) return;
+    }
 
     const result =
       source === "camera"

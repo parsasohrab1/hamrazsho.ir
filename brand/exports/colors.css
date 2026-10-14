@@ -1,7 +1,9 @@
-/* Yavar (یاور) brand color tokens — web / CSS custom properties. */
+/* Hamraz (همراز) brand color tokens — web / CSS custom properties. */
 :root {
-  --yavar-teal: #0EA5A4;    /* primary — trust, calm, technical competence */
-  --yavar-amber: #F5A623;   /* secondary — human warmth, support */
-  --yavar-navy: #0D1424;    /* organizational background (dark) */
-  --yavar-cream: #FAF0DC;   /* warm off-white — focal points, text on navy */
+  --hamraz-lapis: #16245C;     /* primary — brand tile, text on light */
+  --hamraz-turquoise: #2BB3AA; /* secondary ring, accents */
+  --hamraz-gold: #E0A93B;      /* the shared "secret" lens, highlights */
+  --hamraz-ivory: #F7F1E3;     /* left ring, text on dark */
+  --hamraz-night: #0B1233;     /* app background (dark) */
+  --hamraz-button: #1F9C94;    /* turquoise darkened for buttons with white text */
 }

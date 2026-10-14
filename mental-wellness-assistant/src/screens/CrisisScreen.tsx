@@ -1,3 +1,4 @@
+import { featureById, isFeatureVisible } from "@/config/features";
 import React, { useEffect, useState } from "react";
 import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -88,12 +89,14 @@ export default function CrisisScreen({ navigation }: Props) {
         ))}
       </View>
 
+      {isFeatureVisible(featureById("music")) ? (
       <View style={styles.section}>
         <Text style={styles.subheading}>موسیقی آرام‌بخش</Text>
         <Pressable style={styles.secondaryButton} onPress={() => navigation.navigate("Music")}>
           <Text style={styles.secondaryButtonText}>پخش موسیقی آرام‌بخش</Text>
         </Pressable>
       </View>
+      ) : null}
 
       <View style={styles.section}>
         <Text style={styles.subheading}>کمی سبکی، فقط اگر آماده‌اید</Text>

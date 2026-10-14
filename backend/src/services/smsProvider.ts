@@ -40,7 +40,7 @@ export const kavenegarSmsProvider: SmsProvider = {
     const params = new URLSearchParams({
       receptor: phone,
       token: code,
-      template: "yavar-otp",
+      template: "hamraz-otp",
     });
     const url = `https://api.kavenegar.com/v1/${env.kavenegarApiKey}/verify/lookup.json?${params.toString()}`;
     const res = await fetch(url);

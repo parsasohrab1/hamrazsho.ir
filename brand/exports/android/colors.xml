@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Yavar (یاور) brand color tokens — Android (res/values/colors.xml). -->
+<!-- Hamraz brand color tokens — Android (res/values/colors.xml). -->
 <resources>
-    <color name="yavar_teal">#0EA5A4</color>
-    <color name="yavar_amber">#F5A623</color>
-    <color name="yavar_navy">#0D1424</color>
-    <color name="yavar_cream">#FAF0DC</color>
+    <color name="hamraz_lapis">#16245C</color>
+    <color name="hamraz_turquoise">#2BB3AA</color>
+    <color name="hamraz_gold">#E0A93B</color>
+    <color name="hamraz_ivory">#F7F1E3</color>
+    <color name="hamraz_night">#0B1233</color>
 </resources>

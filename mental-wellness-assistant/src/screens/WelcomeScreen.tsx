@@ -18,10 +18,11 @@ export default function WelcomeScreen({ navigation }: Props) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>دستیار همراه ذهن</Text>
+      <Text style={styles.title}>خودارزیابی حال روان</Text>
       <Text style={styles.subtitle}>
         یک گفتگوی کوتاه صوتی یا نوشتاری، برای فهمیدن این‌که این روزها چه می‌گذرد و پیشنهاد کمک مناسب —
-        موسیقی آرام‌بخش، پیشنهادهای سبک زندگی، یا در صورت نیاز، راه‌های دریافت کمک فوری.
+        پیشنهادهای سبک زندگی، منابع آموزشی، یا در صورت نیاز، راه‌های دریافت کمک فوری. پاسخ‌های شما فقط روی
+        همین گوشی می‌ماند.
       </Text>
 
       <View style={styles.buttonGroup}>
@@ -32,64 +33,6 @@ export default function WelcomeScreen({ navigation }: Props) {
           <Text style={styles.secondaryButtonText}>گفتگوی سریع (۵ پرسش)</Text>
         </Pressable>
       </View>
-
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("Music")}>
-        <Text style={styles.textLinkText}>فقط می‌خواهم موسیقی آرام‌بخش گوش بدهم ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("FavoriteMusic")}>
-        <Text style={styles.textLinkText}>موسیقی مورد علاقه‌ام را پیدا و دسته‌بندی کن ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("Recipes")}>
-        <Text style={styles.textLinkText}>راهنمای صوتی پخت غذاهای دنیا ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("Storytelling")}>
-        <Text style={styles.textLinkText}>برای بچه‌ها قصه بگو ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("Counseling")}>
-        <Text style={styles.textLinkText}>مشاورهٔ زناشویی و روابط ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("Fitness")}>
-        <Text style={styles.textLinkText}>راهنمای تغذیه و تناسب اندام (بر اساس BMI) ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("ActiveListening")}>
-        <Text style={styles.textLinkText}>گوش فعال (تشخیص وضعیت اورژانسی از روی گفتار) ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("StyleAdvisor")}>
-        <Text style={styles.textLinkText}>مشاور استایل و آرایش ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("Companion")}>
-        <Text style={styles.textLinkText}>رفیق همراه (گفتگوی روزانه و حال‌واحوال‌پرسی) ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("QuitCoach")}>
-        <Text style={styles.textLinkText}>کمک برای ترک سیگار یا هر نوع اعتیاد ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("CareerCoach")}>
-        <Text style={styles.textLinkText}>مشاور شغلی و کارآفرینی ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("SongId")}>
-        <Text style={styles.textLinkText}>اسم یه آهنگ یادم نیست، پیداش کن ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("SocialAdvisor")}>
-        <Text style={styles.textLinkText}>راهنمایی برای موقعیت‌های اجتماعی و خانوادگی ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("GiftAdvisor")}>
-        <Text style={styles.textLinkText}>نمی‌دونم چه هدیه‌ای بخرم، کمکم کن ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("FamilyCircle")}>
-        <Text style={styles.textLinkText}>خانواده و اطرافیانم را اینجا ثبت کن ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("PersonalTasks")}>
-        <Text style={styles.textLinkText}>برایم ایمیل/پیامک/تماس آماده کن ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("LegalAdvisor")}>
-        <Text style={styles.textLinkText}>سوال حقوقی دارم ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("MentalHealthAwareness")}>
-        <Text style={styles.textLinkText}>می‌خوام دربارهٔ سلامت روان خودم یا خانواده‌ام بیشتر بدونم ↗</Text>
-      </Pressable>
-      <Pressable style={styles.textLink} onPress={() => navigation.navigate("Settings")}>
-        <Text style={styles.textLinkText}>تنظیمات زبان و صدا ↗</Text>
-      </Pressable>
 
       <Disclaimer text={DISCLAIMERS.screeningResult} />
       <Disclaimer text={DISCLAIMERS.crisisNotSubstitute} tone="warning" />
@@ -103,7 +46,7 @@ const styles = StyleSheet.create({
   title: { color: "#f8fafc", fontSize: 26, fontWeight: "700", textAlign: "center", marginBottom: 12 },
   subtitle: { color: "#cbd5e1", fontSize: 15, lineHeight: 22, textAlign: "right", marginBottom: 24 },
   buttonGroup: { gap: 12, marginBottom: 8 },
-  primaryButton: { backgroundColor: "#2563eb", borderRadius: 14, paddingVertical: 16, alignItems: "center" },
+  primaryButton: { backgroundColor: "#1F9C94", borderRadius: 14, paddingVertical: 16, alignItems: "center" },
   primaryButtonText: { color: "#fff", fontSize: 16, fontWeight: "700" },
   secondaryButton: {
     backgroundColor: "transparent",
@@ -114,6 +57,4 @@ const styles = StyleSheet.create({
     borderColor: "#475569",
   },
   secondaryButtonText: { color: "#e2e8f0", fontSize: 15, fontWeight: "600" },
-  textLink: { paddingVertical: 10, alignItems: "center" },
-  textLinkText: { color: "#60a5fa", fontSize: 14 },
 });

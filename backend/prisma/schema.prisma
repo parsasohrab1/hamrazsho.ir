@@ -1,4 +1,4 @@
-// Yavar backend data model.
+// Hamraz backend data model.
 //
 // Deliberately minimal by design: instead of a hand-normalized table per
 // client feature (20+ and growing), UserData is a generic per-user
@@ -26,8 +26,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  data  UserData[]
-  files UserFile[]
+  data      UserData[]
+  files     UserFile[]
+  purchases Purchase[]
+  orders    PaymentOrder[]
 
   @@map("users")
 }
@@ -106,4 +108,55 @@ model OtpCode {
 
   @@index([phone])
   @@map("otp_codes")
+}
+
+/// A verified premium entitlement grant. One row per verified store
+/// purchase / web payment. The user's premium status is derived from these
+/// rows (latest non-revoked `expiresAt` in the future) — see
+/// src/billing/entitlement.ts. `userId` is nullable + SetNull on delete:
+/// when a user deletes their account we remove every personal row, but
+/// financial records of a completed payment must be kept for accounting/tax
+/// (and for store refund disputes), detached from the deleted identity.
+model Purchase {
+  id            String    @id @default(uuid())
+  userId        String?
+  provider      String // "bazaar" | "myket" | "zarinpal" | "manual"
+  planId        String // see src/billing/plans.ts
+  productId     String // store SKU (or planId for web payments)
+  /// Store purchase token, or Zarinpal authority — unique so the same
+  /// receipt can never be redeemed twice (or by two accounts).
+  purchaseToken String    @unique
+  orderId       String?
+  startsAt      DateTime
+  expiresAt     DateTime
+  autoRenewing  Boolean   @default(false)
+  revokedAt     DateTime?
+  raw           Json?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@map("purchases")
+}
+
+/// A pending/finished web (Zarinpal) checkout. A Purchase row is created
+/// only after the gateway's server-side verify call succeeds.
+model PaymentOrder {
+  id         String    @id @default(uuid())
+  userId     String?
+  planId     String
+  amountRial Int
+  authority  String    @unique
+  status     String    @default("pending") // "pending" | "paid" | "failed"
+  refId      String?
+  cardPan    String?
+  createdAt  DateTime  @default(now())
+  paidAt     DateTime?
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@map("payment_orders")
 }

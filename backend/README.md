@@ -1,6 +1,6 @@
-# Yavar backend
+# Hamraz backend
 
-API server for the یاور (Yāvar) voice assistant: phone + OTP authentication,
+API server for the همراز (Hamrāz) voice assistant: phone + OTP authentication,
 a generic per-user key-value sync store (mirrors the client app's
 AsyncStorage keys), and file uploads (e.g. style-advisor photos).
 

@@ -16,6 +16,7 @@ import { useCompanionProfile } from "@/state/useCompanionProfile";
 import { useMoodLog } from "@/state/useMoodLog";
 import { voiceService } from "@/voice/voiceService";
 import { ALL_MOODS } from "@/engine/moodMusicEngine";
+import { FeatureId, featureById, isFeatureVisible } from "@/config/features";
 import { greeting, journalAcknowledgment, reflectionForMood, suggestionsForMood, summarizeRecentMoods } from "@/engine/companionEngine";
 import ChatBubble from "@/components/ChatBubble";
 import MicButton from "@/components/MicButton";
@@ -73,6 +74,18 @@ const navigateToSuggestion = (navigation: Props["navigation"], kind: CompanionSu
   }
 };
 
+/** Which feature each suggestion opens — suggestions for features that
+ *  aren't in this build (demo-only music, hidden premium) are dropped. */
+const SUGGESTION_FEATURE: Record<CompanionSuggestion["kind"], FeatureId> = {
+  music: "music",
+  favorite_music: "favoriteMusic",
+  screening: "screening",
+  fitness: "fitness",
+  counseling: "counseling",
+  recipes: "recipes",
+  storytelling: "storytelling",
+};
+
 export default function CompanionScreen({ navigation }: Props) {
   const { locale, voiceEnabled, startSession } = useSession();
   const { profile, loaded: profileLoaded, setName, addFact, removeFact } = useCompanionProfile();
@@ -118,7 +131,7 @@ export default function CompanionScreen({ navigation }: Props) {
     logMood(mood);
     const reflection = reflectionForMood(mood);
     say(reflection[locale]);
-    setActiveSuggestions(suggestionsForMood(mood));
+    setActiveSuggestions(suggestionsForMood(mood).filter((sg) => isFeatureVisible(featureById(SUGGESTION_FEATURE[sg.kind]))));
   };
 
   const goToSuggestion = (s: CompanionSuggestion) => {

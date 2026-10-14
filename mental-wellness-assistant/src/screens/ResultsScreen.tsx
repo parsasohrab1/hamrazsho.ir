@@ -1,3 +1,4 @@
+import { featureById, isFeatureVisible } from "@/config/features";
 import React from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -60,9 +61,11 @@ export default function ResultsScreen({ navigation }: Props) {
       )}
 
       <View style={styles.actions}>
+      {isFeatureVisible(featureById("music")) ? (
         <Pressable style={styles.primaryButton} onPress={() => navigation.navigate("Music")}>
           <Text style={styles.primaryButtonText}>پخش موسیقی متناسب با حالم</Text>
         </Pressable>
+      ) : null}
         <Pressable style={styles.secondaryButton} onPress={restart}>
           <Text style={styles.secondaryButtonText}>گفتگوی جدید</Text>
         </Pressable>

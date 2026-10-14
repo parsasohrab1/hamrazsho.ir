@@ -11,6 +11,8 @@ interface Props {
   subheading: string;
   topics: AdvisoryTopic[];
   disclaimer: { fa: string; en: string };
+  /** false on the read-only website: no voice read-out. */
+  allowVoice?: boolean;
 }
 
 /** Shared browse/search UI for the legal-advisor and mental-health-
@@ -18,7 +20,7 @@ interface Props {
  *  library, searchable by keyword, one topic expandable at a time
  *  with an optional voice read-out. See DISCLAIMERS.legalAdvisorLimitations
  *  and DISCLAIMERS.mentalHealthAwarenessLimitations. */
-export default function AdvisoryTopicBrowser({ heading, subheading, topics, disclaimer }: Props) {
+export default function AdvisoryTopicBrowser({ heading, subheading, topics, disclaimer, allowVoice = true }: Props) {
   const { locale, voiceEnabled } = useSession();
   const [query, setQuery] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -28,7 +30,7 @@ export default function AdvisoryTopicBrowser({ heading, subheading, topics, disc
   const toggle = (topic: AdvisoryTopic) => {
     const next = expandedId === topic.id ? null : topic.id;
     setExpandedId(next);
-    if (next && voiceEnabled) {
+    if (next && voiceEnabled && allowVoice) {
       voiceService.speak(topicToSpokenText(topic), locale).catch(() => {});
     }
   };
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
   },
   cardHeader: { flexDirection: "row-reverse", alignItems: "center", gap: 10 },
   dayBadge: {
-    color: "#0ea5a4",
+    color: "#1F9C94",
     fontSize: 11,
     fontWeight: "700",
     backgroundColor: "#0b2540",
@@ -112,6 +114,6 @@ const styles = StyleSheet.create({
   cardBody: { marginTop: 10, gap: 6 },
   hook: { color: "#cbd5e1", fontSize: 13, textAlign: "right", fontStyle: "italic" },
   point: { color: "#e2e8f0", fontSize: 13, textAlign: "right", lineHeight: 20 },
-  cta: { color: "#f5a623", fontSize: 12, textAlign: "right", marginTop: 6 },
+  cta: { color: "#E0A93B", fontSize: 12, textAlign: "right", marginTop: 6 },
   noneText: { color: "#94a3b8", fontSize: 13, textAlign: "right", marginTop: 20 },
 });

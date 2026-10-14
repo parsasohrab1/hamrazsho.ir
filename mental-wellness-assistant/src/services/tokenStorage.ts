@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /** Separate, clearly-namespaced key so a future generic-sync pass over
  *  "mind_companion_*" keys never accidentally touches auth tokens. */
-const TOKENS_KEY = "yavar_auth_tokens_v1";
+const TOKENS_KEY = "hamraz_auth_tokens_v1";
 
 export interface AuthTokens {
   accessToken: string;

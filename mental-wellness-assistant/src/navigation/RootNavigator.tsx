@@ -31,9 +31,44 @@ import SettingsScreen from "@/screens/SettingsScreen";
 import LoginScreen from "@/screens/LoginScreen";
 import LegalAdvisorScreen from "@/screens/LegalAdvisorScreen";
 import MentalHealthAwarenessScreen from "@/screens/MentalHealthAwarenessScreen";
+import HomeScreen from "@/screens/HomeScreen";
+import PaywallScreen from "@/screens/PaywallScreen";
+import LegalDocScreen from "@/screens/LegalDocScreen";
 import { PersonalityTrait, SocialRelation } from "@/types";
+import { BRAND } from "@/config/brand";
+import { FeatureId, featureById } from "@/config/features";
+import { withFeatureGate } from "@/components/PremiumGate";
+import BrandMark from "@/components/BrandMark";
+import { segmentForRoute } from "@/config/segments";
+import { featureByRoute } from "@/config/features";
+import { screenIntro } from "@/engine/greetingEngine";
+import { queueIntro } from "@/voice/voiceService";
+import { useSession } from "@/state/SessionContext";
+
+// Route-level gates (premium + demo-only). Sub-screens share their parent
+// feature's gate so a deep link can't skip the paywall.
+const gate = <P extends object>(id: FeatureId, C: React.ComponentType<P>, countsAsUse = true) =>
+  withFeatureGate(featureById(id), C, countsAsUse);
+const G = {
+  Music: gate("music", MusicScreen),
+  FavoriteMusic: gate("favoriteMusic", FavoriteMusicScreen),
+  SongId: gate("songId", SongIdScreen),
+  Recipes: gate("recipes", RecipeScreen),
+  Cooking: gate("recipes", CookingScreen, false),
+  StyleAdvisor: gate("style", StyleAdvisorScreen),
+  StyleResults: gate("style", StyleResultsScreen, false),
+  CareerCoach: gate("career", CareerCoachScreen),
+  SocialAdvisor: gate("social", SocialAdvisorScreen),
+  GiftAdvisor: gate("gift", GiftAdvisorScreen),
+  FamilyCircle: gate("family", FamilyCircleScreen),
+  PersonalTasks: gate("tasks", PersonalTasksScreen),
+  LegalAdvisor: gate("legal", LegalAdvisorScreen),
+};
 
 export type RootStackParamList = {
+  Home: undefined;
+  Paywall: { featureId?: FeatureId } | undefined;
+  LegalDoc: { doc: "privacy" | "terms" };
   Welcome: undefined;
   Screening: undefined;
   Results: undefined;
@@ -70,18 +105,34 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const segmentOf = (route: string) => segmentForRoute(route, (r) => featureByRoute(r)?.id);
+
 export default function RootNavigator() {
+  const { voiceEnabled } = useSession();
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Welcome"
-        screenOptions={{
-          headerStyle: { backgroundColor: "#0f172a" },
-          headerTintColor: "#f8fafc",
-          contentStyle: { backgroundColor: "#0f172a" },
-        }}
+        initialRouteName="Home"
+        screenOptions={({ route }) => ({
+          headerStyle: { backgroundColor: BRAND.colors.background },
+          headerTintColor: BRAND.colors.text,
+          contentStyle: { backgroundColor: BRAND.colors.background },
+          // The segmented mark: only the circle for this screen's pillar is colored.
+          headerRight: () => <BrandMark size={64} active={segmentOf(route.name)} />,
+        })}
+        screenListeners={({ route }) => ({
+          // Friendly spoken one-liner when a section opens (see greetingEngine).
+          focus: () => {
+            if (!voiceEnabled) return;
+            const line = screenIntro(route.name);
+            if (line) queueIntro(line);
+          },
+        })}
       >
-        <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ title: "دستیار همراه ذهن" }} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ title: BRAND.name.fa, headerShown: false }} />
+        <Stack.Screen name="Paywall" component={PaywallScreen} options={{ title: "اشتراک ویژه" }} />
+        <Stack.Screen name="LegalDoc" component={LegalDocScreen} options={{ title: "" }} />
+        <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ title: "خودارزیابی حال روان" }} />
         <Stack.Screen name="Screening" component={ScreeningScreen} options={{ title: "گفتگوی غربالگری" }} />
         <Stack.Screen name="Results" component={ResultsScreen} options={{ title: "نتیجه" }} />
         <Stack.Screen
@@ -89,16 +140,16 @@ export default function RootNavigator() {
           component={CrisisScreen}
           options={{ title: "کمک فوری", gestureEnabled: false }}
         />
-        <Stack.Screen name="Music" component={MusicScreen} options={{ title: "موسیقی آرام‌بخش" }} />
+        <Stack.Screen name="Music" component={G.Music} options={{ title: "موسیقی آرام‌بخش" }} />
         <Stack.Screen
           name="FavoriteMusic"
-          component={FavoriteMusicScreen}
+          component={G.FavoriteMusic}
           options={{ title: "موسیقی مورد علاقه" }}
         />
-        <Stack.Screen name="Recipes" component={RecipeScreen} options={{ title: "رسپی‌های جهانی" }} />
+        <Stack.Screen name="Recipes" component={G.Recipes} options={{ title: "رسپی‌های جهانی" }} />
         <Stack.Screen
           name="Cooking"
-          component={CookingScreen}
+          component={G.Cooking}
           options={{ title: "راهنمای گام‌به‌گام پخت" }}
         />
         <Stack.Screen
@@ -139,25 +190,25 @@ export default function RootNavigator() {
         />
         <Stack.Screen
           name="StyleAdvisor"
-          component={StyleAdvisorScreen}
+          component={G.StyleAdvisor}
           options={{ title: "مشاور استایل" }}
         />
         <Stack.Screen
           name="StyleResults"
-          component={StyleResultsScreen}
+          component={G.StyleResults}
           options={{ title: "پیشنهاد استایل" }}
         />
         <Stack.Screen name="Companion" component={CompanionScreen} options={{ title: "رفیق همراه" }} />
         <Stack.Screen name="QuitCoach" component={QuitCoachScreen} options={{ title: "ترک عادت" }} />
-        <Stack.Screen name="CareerCoach" component={CareerCoachScreen} options={{ title: "مشاور شغلی" }} />
-        <Stack.Screen name="SongId" component={SongIdScreen} options={{ title: "پیدا کردن آهنگ" }} />
-        <Stack.Screen name="SocialAdvisor" component={SocialAdvisorScreen} options={{ title: "مشاور موقعیت‌های اجتماعی" }} />
-        <Stack.Screen name="GiftAdvisor" component={GiftAdvisorScreen} options={{ title: "پیدا کردن هدیه" }} />
-        <Stack.Screen name="FamilyCircle" component={FamilyCircleScreen} options={{ title: "خانواده و اطرافیان" }} />
-        <Stack.Screen name="PersonalTasks" component={PersonalTasksScreen} options={{ title: "کارهای شخصی" }} />
+        <Stack.Screen name="CareerCoach" component={G.CareerCoach} options={{ title: "مشاور شغلی" }} />
+        <Stack.Screen name="SongId" component={G.SongId} options={{ title: "پیدا کردن آهنگ" }} />
+        <Stack.Screen name="SocialAdvisor" component={G.SocialAdvisor} options={{ title: "مشاور موقعیت‌های اجتماعی" }} />
+        <Stack.Screen name="GiftAdvisor" component={G.GiftAdvisor} options={{ title: "پیدا کردن هدیه" }} />
+        <Stack.Screen name="FamilyCircle" component={G.FamilyCircle} options={{ title: "خانواده و اطرافیان" }} />
+        <Stack.Screen name="PersonalTasks" component={G.PersonalTasks} options={{ title: "کارهای شخصی" }} />
         <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: "تنظیمات" }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ title: "ورود" }} />
-        <Stack.Screen name="LegalAdvisor" component={LegalAdvisorScreen} options={{ title: "مشاور حقوقی" }} />
+        <Stack.Screen name="LegalAdvisor" component={G.LegalAdvisor} options={{ title: "مشاور حقوقی" }} />
         <Stack.Screen
           name="MentalHealthAwareness"
           component={MentalHealthAwarenessScreen}

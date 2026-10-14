@@ -1,0 +1,48 @@
+{
+  "cli": {
+    "version": ">= 12.0.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "base": {
+      "node": "20.18.0",
+      "env": {
+        "APP_VERSION": "1.0.0",
+        "ANDROID_VERSION_CODE": "1",
+        "EXPO_PUBLIC_API_BASE_URL": "https://api.hamrazsho.ir"
+      }
+    },
+    "development": {
+      "extends": "base",
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": { "EXPO_PUBLIC_STORE": "dev", "EXPO_PUBLIC_API_BASE_URL": "http://192.168.1.10:4000" }
+    },
+    "preview-bazaar": {
+      "extends": "base",
+      "distribution": "internal",
+      "android": { "buildType": "apk" },
+      "env": { "EXPO_PUBLIC_STORE": "bazaar" }
+    },
+    "bazaar": {
+      "extends": "base",
+      "android": { "buildType": "apk" },
+      "env": { "EXPO_PUBLIC_STORE": "bazaar" }
+    },
+    "myket": {
+      "extends": "base",
+      "android": { "buildType": "apk" },
+      "env": { "EXPO_PUBLIC_STORE": "myket" }
+    },
+    "play": {
+      "extends": "base",
+      "android": { "buildType": "app-bundle" },
+      "env": { "EXPO_PUBLIC_STORE": "play" }
+    }
+  },
+  "submit": {
+    "play": {
+      "android": { "track": "internal", "serviceAccountKeyPath": "./secrets/play-service-account.json" }
+    }
+  }
+}
